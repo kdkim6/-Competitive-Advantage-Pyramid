@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Competitive Advantage Pyramid Builder - Stated vs. Revealed</title>
+<style>
+:root{--red:#8b1e14;--deep:#3c2119;--tan:#f3eadf;--cream:#fbf8f3;--green:#425b45;--gold:#b18b55;--ink:#25211f;--muted:#6e655f;--line:#ded5cc;--white:#fff;}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,Arial,Helvetica,sans-serif;background:var(--cream);color:var(--ink);line-height:1.45}
+a{color:var(--red)} .wrap{max-width:1180px;margin:auto;padding:28px 24px 60px}
+.hero{background:linear-gradient(135deg,var(--deep),var(--red));color:white;border-radius:22px;padding:34px 36px;box-shadow:0 10px 30px rgba(60,33,25,.16)}
+.hero h1{margin:0 0 6px;font-size:34px}.hero p{margin:8px 0;max-width:900px}.meta{font-size:13px;opacity:.85}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}.nav button{border:1px solid var(--line);background:white;border-radius:999px;padding:9px 14px;cursor:pointer;font-weight:700}.nav button.active{background:var(--red);color:white;border-color:var(--red)}
+.panel{display:none}.panel.active{display:block}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px}@media(max-width:860px){.grid2{grid-template-columns:1fr}}
+.card{background:white;border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 4px 18px rgba(60,33,25,.06);margin-bottom:18px}.card h2,.card h3{margin-top:0}
+.pyramid{display:flex;flex-direction:column;align-items:center;gap:8px;margin:18px auto 8px;max-width:520px}.layer{color:white;text-align:center;padding:16px 26px;font-weight:800;box-shadow:0 5px 12px rgba(0,0,0,.12)}
+.layer.top{width:58%;background:var(--red);clip-path:polygon(18% 0,82% 0,100% 100%,0 100%)}.layer.mid{width:79%;background:var(--gold);clip-path:polygon(10% 0,90% 0,100% 100%,0 100%)}.layer.base{width:100%;background:var(--green);clip-path:polygon(5% 0,95% 0,100% 100%,0 100%)}
+.layer small{display:block;font-weight:500;margin-top:5px;line-height:1.25}
+.item{padding:12px 0;border-bottom:1px solid #eee}.item:last-child{border-bottom:0}.tag{display:inline-block;border-radius:999px;padding:3px 8px;font-size:11px;font-weight:800;margin-right:6px}.resource{background:#e7f0e7;color:#315036}.capability{background:#f4e9d5;color:#775826}.activity{background:#f6deda;color:#7f231b}.priority{background:#e6e0dc;color:#4c3931}.cite{font-size:12px;color:var(--muted);margin-top:4px}.cite a{word-break:break-all}
+.gap{border-left:6px solid var(--red);padding-left:16px}.gap h3{margin-bottom:6px}.meaning{background:var(--tan);border-radius:12px;padding:12px;margin-top:10px}.classify{font-size:12px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:.04em}
+.scorebox{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:12px 0}@media(max-width:600px){.scorebox{grid-template-columns:1fr}}.metric{background:var(--tan);border-radius:14px;padding:14px;text-align:center}.metric strong{display:block;font-size:28px;color:var(--red)}
+.matrix table{width:100%;border-collapse:collapse}.matrix th,.matrix td{padding:10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}.matrix select{padding:6px;border-radius:8px;border:1px solid var(--line);background:white}
+.note{font-size:13px;color:var(--muted)}.source{margin:12px 0;padding:12px;background:#faf7f3;border-left:4px solid var(--gold);border-radius:8px}.source strong{display:block}.method li{margin:7px 0}
+.footer{margin-top:30px;font-size:12px;color:var(--muted)}
+.printbtn{float:right;border:0;background:white;color:var(--red);font-weight:800;padding:9px 12px;border-radius:10px;cursor:pointer}
+@media print{.nav,.printbtn{display:none}.panel{display:block!important}.hero{box-shadow:none}.card{box-shadow:none;break-inside:avoid}.wrap{max-width:none;padding:10px}.grid2{grid-template-columns:1fr 1fr}}
+
+/* --- multi-company builder additions --- */
+.mode-shell{max-width:1180px;margin:18px auto 0;padding:0 24px}.mode-switch{display:flex;gap:10px;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px;box-shadow:0 4px 16px rgba(60,33,25,.06)}
+.mode-switch button{border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 14px;cursor:pointer;font-weight:800;color:var(--deep)}.mode-switch button.active{background:var(--deep);color:#fff;border-color:var(--deep)}
+.workspace{display:none}.workspace.active{display:block}
+.builder-hero{background:linear-gradient(135deg,#273b2b,var(--green));color:#fff;border-radius:22px;padding:34px 36px;box-shadow:0 10px 30px rgba(39,59,43,.16)}.builder-hero h1{margin:0 0 6px;font-size:34px}.builder-hero p{max-width:920px}
+.builder-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:18px}@media(max-width:900px){.builder-grid{grid-template-columns:1fr}}
+.field{margin:13px 0}.field label{display:block;font-weight:800;margin-bottom:5px}.field input,.field select,.field textarea{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:10px;background:#fff;font:inherit}.field textarea{min-height:150px;resize:vertical}
+.inline-fields{display:grid;grid-template-columns:1.1fr .9fr;gap:10px}@media(max-width:650px){.inline-fields{grid-template-columns:1fr}}
+.action{border:0;border-radius:11px;background:var(--red);color:#fff;font-weight:800;padding:11px 16px;cursor:pointer}.action.secondary{background:var(--green)}.action.ghost{background:#fff;color:var(--deep);border:1px solid var(--line)}.action:disabled{opacity:.55;cursor:not-allowed}
+.dropzone{border:2px dashed #c9bdb1;border-radius:14px;padding:20px;text-align:center;background:#fcfaf7}.dropzone input{margin-top:10px}
+.doc-row{border:1px solid var(--line);border-radius:12px;padding:12px;margin:10px 0;background:#fff}.doc-row-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.doc-row h4{margin:0 0 5px}.doc-meta{font-size:12px;color:var(--muted)}.doc-controls{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}@media(max-width:600px){.doc-controls{grid-template-columns:1fr}}.doc-controls select,.doc-controls input{width:100%;padding:7px;border:1px solid var(--line);border-radius:8px}.remove-doc{border:0;background:#f7e6e4;color:#7f231b;border-radius:8px;padding:5px 8px;cursor:pointer;font-weight:800}
+.status{padding:10px 12px;border-radius:10px;background:var(--tan);font-size:13px;margin-top:10px}.status.error{background:#f7e3e0;color:#7d231c}.status.ok{background:#e8f0e9;color:#315036}
+.generated{margin-top:18px}.generated .analysis-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.generated .analysis-head h2{margin-bottom:4px}.generated .evidence-excerpt{font-size:12px;color:var(--muted);margin-top:4px;font-style:italic}.generated .warning{background:#fff7e7;border-left:4px solid var(--gold);padding:11px;border-radius:8px;margin:12px 0}.generated .gap-card{border-left:6px solid var(--red);padding:4px 0 4px 15px;margin:18px 0}.generated .gap-card h3{margin:0 0 6px}.generated .track-text p{margin:11px 0}.generated .source-chip{display:inline-block;background:#f3eee8;border-radius:999px;padding:3px 8px;font-size:11px;margin:3px 4px 3px 0}
+.code-note{background:#f7f7f4;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:13px}.tiny{font-size:11px;color:var(--muted)}
+.builder-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.builder-tabs button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 12px;font-weight:800;cursor:pointer}.builder-tabs button.active{background:var(--green);color:#fff;border-color:var(--green)}.builder-panel{display:none}.builder-panel.active{display:block}
+@media print{.mode-shell,.builder-controls,.builder-tabs{display:none!important}#builderWorkspace.active .builder-hero{box-shadow:none}#builderWorkspace.active .generated{display:block!important}#builderWorkspace.active .builder-inputs{display:none!important}}
+
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js"></script>
+</head>
+<body>
+<div class="mode-shell"><div class="mode-switch" aria-label="Tool mode"><button id="modeChipotle" class="active">Preloaded example — Chipotle</button><button id="modeBuilder">Analyze another company</button></div></div>
+<div id="chipotleWorkspace" class="workspace active">
+<div class="wrap">
+<section class="hero">
+<button class="printbtn" onclick="window.print()">Print / Save PDF</button>
+<h1>Chipotle Mexican Grill: Competitive Advantage Pyramid</h1>
+<p><b>Stated vs. Revealed</b> - a behavioral strategy audit using company statements, executive incentives, capital allocation, segment reporting, and current hiring.</p>
+<div class="meta">Evidence refresh: September 24, 2026 | Company: Chipotle Mexican Grill, Inc. (NYSE: CMG)</div>
+</section>
+<div class="nav">
+<button class="active" data-panel="compare">Side-by-side</button><button data-panel="gaps">Gap analysis</button><button data-panel="distance">Distance model</button><button data-panel="track">Public-company analysis</button><button data-panel="evidence">Evidence ledger</button><button data-panel="method">Method</button>
+</div>
+
+<section id="compare" class="panel active">
+<div class="grid2">
+<div class="card"><h2>Stated Pyramid</h2><p class="note">Built only from what Chipotle says about itself, primarily Form 10-K Item 1.</p>
+<div class="pyramid"><div class="layer top">ACTIVITIES<small>Operate restaurants; digital ordering & Chipotlanes; menu innovation; geographic expansion</small></div><div class="layer mid">RESOURCES & CAPABILITIES<small>People, responsible supplier network, digital platform; culinary excellence, food safety, talent development</small></div><div class="layer base">VALUES & PRIORITIES<small>“Cultivate a Better World”; Food with Integrity; guest experience & access; people-first growth</small></div></div>
+<h3>Base - values & priorities</h3>
+<div class="item"><span class="tag priority">PRIORITY</span><b>Cultivate a Better World through responsibly sourced, classically cooked, real food.</b><div class="cite">2025 Form 10-K, Item 1 - Business, General, p. 4.</div></div>
+<div class="item"><span class="tag priority">PRIORITY</span><b>Great guest experience and making food more accessible.</b><div class="cite">2025 Form 10-K, Item 1 - Business, General, p. 4.</div></div>
+<div class="item"><span class="tag priority">PRIORITY</span><b>People-first development: employees can thrive and grow into leaders.</b><div class="cite">2025 Form 10-K, Item 1 - Human Capital, pp. 5-6.</div></div>
+<h3>Middle - resources & capabilities</h3>
+<div class="item"><span class="tag resource">RESOURCE</span><b>People / talent base.</b><div class="cite">2025 Form 10-K, Item 1 - Human Capital, p. 5: employees described as Chipotle’s “most important asset.”</div></div>
+<div class="item"><span class="tag resource">RESOURCE</span><b>Responsible ingredient and supplier network.</b><div class="cite">2025 Form 10-K, Item 1 - Food with Integrity / Purchasing, p. 4.</div></div>
+<div class="item"><span class="tag resource">RESOURCE</span><b>Digital platform and Rewards ecosystem.</b><div class="cite">2025 Form 10-K, Item 1 - Digital Business and Innovation, p. 5.</div></div>
+<div class="item"><span class="tag capability">CAPABILITY</span><b>Operational and culinary excellence.</b><div class="cite">2025 Form 10-K, Item 1 - Business Strategy, p. 4.</div></div>
+<div class="item"><span class="tag capability">CAPABILITY</span><b>Food-safety and quality-assurance system.</b><div class="cite">2025 Form 10-K, Item 1 - Quality Assurance and Food Safety, p. 5.</div></div>
+<div class="item"><span class="tag capability">CAPABILITY</span><b>Internal leadership development.</b><div class="cite">2025 Form 10-K, Item 1 - Talent Acquisition / Talent Management, pp. 5-6.</div></div>
+<h3>Top - activities</h3>
+<div class="item"><span class="tag activity">ACTIVITY</span><b>Own and operate focused-menu restaurants.</b><div class="cite">2025 Form 10-K, Item 1 - General, p. 4.</div></div>
+<div class="item"><span class="tag activity">ACTIVITY</span><b>Modernize ordering through digital channels and Chipotlanes.</b><div class="cite">2025 Form 10-K, Item 1 - Digital Business and Innovation, p. 5.</div></div>
+<div class="item"><span class="tag activity">ACTIVITY</span><b>Innovate the menu and expand global reach.</b><div class="cite">2025 Form 10-K, Item 1 - Business Strategy, p. 4.</div></div>
+</div>
+
+<div class="card"><h2>Revealed Pyramid</h2><p class="note">Built from what Chipotle actually rewards, funds, earns revenue from, and is currently hiring to strengthen.</p>
+<div class="pyramid"><div class="layer top">ACTIVITIES<small>Monetize U.S. company-owned restaurants; open new units/Chipotlanes; grow digital & loyalty</small></div><div class="layer mid">RESOURCES & CAPABILITIES<small>Restaurant network, digital customer channel, technology partners; development, unit economics, analytics</small></div><div class="layer base">VALUES & PRIORITIES<small>Profitable restaurant growth + site pipeline + shareholder value, with food safety as a constraint</small></div></div>
+<h3>Base - values & priorities</h3>
+<div class="item"><span class="tag priority">PRIORITY</span><b>Profitable same-store growth and restaurant cash flow.</b><div class="cite">2026 Proxy, Compensation Discussion & Analysis, Annual Incentive Plan, pp. 43-44: 40% comparable restaurant sales + 40% restaurant cash-flow margin.</div></div>
+<div class="item"><span class="tag priority">PRIORITY</span><b>Build the future restaurant pipeline and keep opening units.</b><div class="cite">2026 Proxy, Annual Incentive Plan, p. 44 (20% site assessment requests); 2025 PSU Awards, pp. 47-48 (10% new restaurant openings). 2025 Form 10-K, Liquidity & Capital Resources, pp. 29-30.</div></div>
+<div class="item"><span class="tag priority">PRIORITY</span><b>Long-term restaurant cash-flow dollars and shareholder return.</b><div class="cite">2026 Proxy, 2025 PSU Awards, pp. 47-48: 90% three-year cumulative base restaurant cash-flow dollars; payout capped if relative TSR is below the 25th percentile.</div></div>
+<div class="item"><span class="tag priority">PRIORITY</span><b>Food safety is a non-negotiable downside guardrail, not an upside incentive.</b><div class="cite">2026 Proxy, Annual Incentive Plan, p. 43: food-safety modifier can reduce payout by up to 20% but cannot increase it.</div></div>
+<div class="item"><span class="tag priority">PRIORITY</span><b>Return substantial excess capital to shareholders.</b><div class="cite">2025 Form 10-K, Consolidated Statements of Cash Flows, p. 39: $2.426B spent on repurchases in 2025 versus $666.3M of property/equipment purchases; Item 5, p. 22, shows additional authorizations.</div></div>
+<h3>Middle - resources & capabilities</h3>
+<div class="item"><span class="tag resource">RESOURCE</span><b>Large, company-owned restaurant footprint concentrated in the U.S.</b><div class="cite">2025 Form 10-K, Note 14 - Segment Reporting, pp. 61-62; U.S. segment revenue $11.679B of $11.926B consolidated revenue.</div></div>
+<div class="item"><span class="tag resource">RESOURCE</span><b>Digital customer channel / Rewards data.</b><div class="cite">2025 Form 10-K, Item 1 - Digital Business and Innovation, p. 5: digital sales were 36.7% of food & beverage revenue.</div></div>
+<div class="item"><span class="tag resource">RESOURCE</span><b>External restaurant-technology investment network.</b><div class="cite">2025 Form 10-K, Note 5 - Equity Investments, pp. 50-51 (Hyphen, Nuro, Cultivate Next); Note 13 - Related Party Transactions, p. 61 (Vebu automation investment).</div></div>
+<div class="item"><span class="tag capability">CAPABILITY</span><b>New-site selection and restaurant development at scale.</b><div class="cite">2025 Form 10-K, MD&A - Restaurant Development, p. 24: 334 openings in 2025, 257 with a Chipotlane; Liquidity & Capital Resources, p. 30: $531.8M planned 2026 new-restaurant capex.</div></div>
+<div class="item"><span class="tag capability">CAPABILITY</span><b>Restaurant-level unit economics and cash-flow management.</b><div class="cite">2026 Proxy, Annual Incentive Plan, p. 44; 2025 PSU Awards, pp. 47-48.</div></div>
+<div class="item"><span class="tag capability">CAPABILITY - BUILDING</span><b>Data-driven operations, loyalty personalization, equipment deployment and planning.</b><div class="cite">Corroborated by current Chipotle job postings (Sept. 2026): Lead Analyst, Operations Insights & Analytics; Senior Manager, Loyalty/CRM/Personalization Analytics; Senior Analyst, Equipment Deployment & Innovation; Analyst, Real Estate Strategy. Primary filing support: 2025 Form 10-K, Item 1 - Digital Business and Innovation, p. 5.</div></div>
+<h3>Top - activities</h3>
+<div class="item"><span class="tag activity">ACTIVITY</span><b>Operate and monetize U.S. company-owned restaurants.</b><div class="cite">2025 Form 10-K, Note 14 - Segment Reporting, pp. 61-62. U.S. segment revenue is approximately 98% of consolidated revenue (calculated from reported figures).</div></div>
+<div class="item"><span class="tag activity">ACTIVITY</span><b>Open new restaurants, increasingly with Chipotlanes.</b><div class="cite">2025 Form 10-K, MD&A - Restaurant Development, p. 24.</div></div>
+<div class="item"><span class="tag activity">ACTIVITY</span><b>Drive ordering through digital channels and loyalty.</b><div class="cite">2025 Form 10-K, Item 1 - Digital Business and Innovation, p. 5.</div></div>
+</div>
+</div></section>
+
+<section id="gaps" class="panel">
+<div class="card"><h2>Substantive gaps</h2>
+<div class="gap"><div class="classify">Potential real misalignment / governance gap</div><h3>1. Broad stakeholder mission vs. narrow positive executive incentives</h3><p><b>Stated:</b> responsible food, people development, environmental stewardship, and community impact sit near the center of the “Cultivate a Better World” identity.</p><p><b>Revealed:</b> positive incentive payouts are driven primarily by comparable sales, restaurant cash-flow margin/dollars, site pipeline, new restaurant openings, and shareholder-return conditions. Food safety can reduce pay but cannot raise it.</p><div class="meaning"><b>Strategic meaning:</b> Chipotle’s social and sourcing commitments appear to function partly as operating guardrails and brand constraints around a growth engine, rather than as co-equal maximization targets. This does not mean the commitments are fake; it means that when trade-offs become painful, the formal pay system places the strongest positive weight on growth and restaurant economics.</div></div>
+<div class="gap"><div class="classify">Deliberate positioning / timing gap</div><h3>2. “Expand global reach” vs. a business still overwhelmingly U.S.-based</h3><p><b>Stated:</b> Chipotle names global expansion as one of five Recipe for Growth priorities.</p><p><b>Revealed:</b> the 2025 U.S. segment generated $11.679B of $11.926B consolidated revenue - about 98%. International operations do not yet meet reportable-segment thresholds.</p><div class="meaning"><b>Strategic meaning:</b> global reach is better interpreted as an option being built than as a current competitive advantage. The gap is not necessarily failure; it reflects a sequencing choice. Chipotle is first exploiting a proven U.S. company-owned model, then extending it through selected company-owned and partner-operated markets.</div></div>
+<div class="gap"><div class="classify">Tension, but not necessarily misalignment</div><h3>3. “People are our most important asset” vs. rapid automation and efficiency investment</h3><p><b>Stated:</b> Chipotle emphasizes internal promotion, leadership development, and team-member experience.</p><p><b>Revealed:</b> it is investing in automation partners and hiring in equipment innovation, workforce technology, operations analytics, and supply-chain systems.</p><div class="meaning"><b>Strategic meaning:</b> this can complement the people strategy if technology removes low-value work and improves throughput. It becomes a real misalignment only if efficiency initiatives erode development, service quality, or retention. The evidence today supports a strategic tension, not a proven contradiction.</div></div>
+</div></section>
+
+<section id="distance" class="panel"><div class="card matrix"><h2>Distance model</h2><p>This is a deliberately simple heuristic, not a valuation model. For each major stated theme: <b>0 = strongly behaviorally supported</b>, <b>1 = partly supported / not directly incented</b>, <b>2 = substantial gap or mostly aspirational</b>. Change the selections to test your own interpretation.</p>
+<table><thead><tr><th>Stated theme</th><th>Behavioral read</th><th>Gap points</th></tr></thead><tbody>
+<tr><td>Food with Integrity / responsible sourcing</td><td>Operationally embedded; food safety is a pay guardrail, but responsible sourcing is not a positive comp metric.</td><td><select class="gapscore"><option>0</option><option selected>1</option><option>2</option></select></td></tr>
+<tr><td>People-first / talent development</td><td>Strong internal-promotion systems, but no direct people metric in 2025 executive incentive design.</td><td><select class="gapscore"><option>0</option><option selected>1</option><option>2</option></select></td></tr>
+<tr><td>Environment / broader stakeholder impact</td><td>Some equipment and sustainability action, but weak direct representation in incentive and capital-allocation signals.</td><td><select class="gapscore"><option>0</option><option selected>1</option><option>2</option></select></td></tr>
+<tr><td>Guest access / digital convenience</td><td>Strongly backed by digital sales, Chipotlanes, technology investment and new-unit growth.</td><td><select class="gapscore"><option selected>0</option><option>1</option><option>2</option></select></td></tr>
+<tr><td>Global reach</td><td>Strategic priority, but ~98% of 2025 revenue remained in the U.S. segment.</td><td><select class="gapscore"><option>0</option><option>1</option><option selected>2</option></select></td></tr>
+<tr><td>Growth / operational excellence / innovation</td><td>Strongly backed by compensation, capex, hiring, unit openings and technology investment.</td><td><select class="gapscore"><option selected>0</option><option>1</option><option>2</option></select></td></tr>
+</tbody></table>
+<div class="scorebox"><div class="metric"><span>Total gap points</span><strong id="score">5</strong><small>out of 12</small></div><div class="metric"><span>Normalized distance</span><strong id="pct">42%</strong><small>higher = more stated/revealed distance</small></div><div class="metric"><span>Interpretation</span><strong id="label">Moderate</strong><small>heuristic only</small></div></div>
+<p class="note">Why keep this simple? A more precise-looking score would imply precision the evidence cannot support. The purpose is to force an explicit mapping between claims and observable behavior.</p></div></section>
+
+<section id="track" class="panel"><div class="card"><h2>Large public company track analysis</h2>
+<p><b>Overall read:</b> Chipotle's stated and revealed pyramids are moderately different, but the evidence points to a mix of deliberate positioning and one meaningful governance risk rather than a wholesale strategy contradiction.</p>
+<p>The strongest alignment is around growth, operational excellence, access, and digital convenience. Chipotle says its Recipe for Growth includes operational and culinary excellence, technology, menu innovation, global expansion, and talent. Its behavior strongly backs the first several items: executive incentives emphasize comparable restaurant sales, restaurant cash flow, site pipeline, and new restaurant openings; capital spending prioritizes restaurant construction; the company continues to build Chipotlanes and digital channels; and current hiring targets analytics, personalization, restaurant equipment, supply-chain data, and real-estate strategy. Those choices reinforce a repeatable economic engine: select attractive sites, open company-owned restaurants, drive throughput and digital access, and convert restaurant sales into cash flow.</p>
+<p>The largest true gap is between the breadth of the stakeholder-oriented mission and the narrower metrics that create upside in executive pay. Chipotle describes people as its most important asset and frames Food with Integrity and responsible sourcing as central to cultivating a better world. Yet the 2025 incentive architecture gives positive weight to sales, restaurant cash-flow margin and dollars, site pipeline, openings, and a shareholder-return condition. Food safety can reduce the annual bonus but cannot increase it, while people development, responsible sourcing, and environmental outcomes are not direct positive payout metrics. This does not prove that those commitments are cosmetic. It does mean that, under a difficult trade-off, the formal incentive system gives management the clearest financial reason to protect growth and restaurant economics. I therefore classify this as a partial real misalignment, or at least a governance/measurement risk.</p>
+<p>The global-expansion gap is different. Chipotle publicly identifies global reach as a growth priority, but about 98% of 2025 consolidated revenue came from its U.S. reportable segment. That looks more like deliberate sequencing than misalignment: the international business is still an option being developed while the company continues exploiting a proven U.S. model. The gap matters because global reach should not yet be described as an existing competitive advantage.</p>
+<p>Finally, the people-versus-automation tension is not necessarily contradictory. Chipotle invests in internal promotion and leadership development while also investing in restaurant automation and hiring technology and analytics roles. If technology removes repetitive work, improves throughput, and frees managers to coach teams and serve guests, it can strengthen the people strategy. The tension would become a misalignment only if efficiency gains begin to undermine retention, development, or guest experience.</p>
+<p><b>Strategic implication:</b> Chipotle's revealed advantage is best described as a tightly managed restaurant-growth system supported by a strong brand, company-owned operating control, digital/Chipotlane convenience, site-development capability, and increasingly sophisticated data and automation. Its purpose-oriented commitments can strengthen that system by differentiating the brand and protecting trust, but the filings provide less evidence that every stakeholder promise would receive equal protection if margins and growth came under sustained pressure.</p>
+<div class="cite">Key evidence: 2026 DEF 14A, CD&A pp. 43-48; 2025 Form 10-K, Item 1 pp. 4-6; MD&A p. 24; Liquidity & Capital Resources pp. 29-30; Cash Flows p. 39; Note 14 pp. 61-62.</div>
+</div></section>
+
+<section id="evidence" class="panel"><div class="card"><h2>Evidence ledger</h2>
+<div class="source"><strong>2025 Form 10-K (filed Feb. 4, 2026)</strong>Primary sections used: Item 1 - Business (pp. 4-6); MD&A - Restaurant Development (p. 24); Liquidity & Capital Resources (pp. 29-30); Consolidated Cash Flows (p. 39); Note 5 - Equity Investments (pp. 50-51); Note 13 - Related Party Transactions (p. 61); Note 14 - Segment Reporting (pp. 61-62).<br><a href="https://www.sec.gov/Archives/edgar/data/1058090/000105809026000009/cmg-20251231.htm" target="_blank">Open SEC filing</a></div>
+<div class="source"><strong>2026 DEF 14A Proxy Statement (filed Apr. 28, 2026)</strong>Primary sections used: Compensation Discussion & Analysis - Annual Incentive Plan (pp. 43-44); Fiscal 2025 Annual LTI / 2025 PSU Awards (pp. 47-48).<br><a href="https://www.sec.gov/Archives/edgar/data/1058090/000114036126017294/ny20063214x1_def14a.htm" target="_blank">Open SEC proxy</a></div>
+<div class="source"><strong>Current hiring evidence (accessed Sept. 24, 2026)</strong>
+<a href="https://jobs.chipotle.com/job/newport-beach/lead-analyst-operations-insights-and-analytics/282/100507293584" target="_blank">Operations Insights & Analytics</a> · 
+<a href="https://jobs.chipotle.com/job/newport-beach/senior-manager-loyalty-crm-and-personalization-analytics/282/95638170080" target="_blank">Loyalty/CRM/Personalization Analytics</a> · 
+<a href="https://jobs.chipotle.com/job/newport-beach/senior-analyst-equipment-deployment-and-innovation/282/100355422784" target="_blank">Equipment Deployment & Innovation</a> · 
+<a href="https://jobs.chipotle.com/job/columbus/analyst-real-estate-strategy/282/99984805792" target="_blank">Real Estate Strategy</a>.</div>
+<div class="source"><strong>Current-results cross-check</strong>Q2 2026 results: 100 company-owned openings in the quarter, 80 with Chipotlanes; digital sales 38.3% of food & beverage revenue; $630.7M of share repurchases.<br><a href="https://ir.chipotle.com/2026-07-29-CHIPOTLE-RAISES-FULL-YEAR-COMPARABLE-SALES-GUIDANCE-ON-STRONG-Q2-MOMENTUM" target="_blank">Open Q2 2026 release</a></div>
+</div></section>
+
+<section id="method" class="panel"><div class="card method"><h2>Method / documented pipeline</h2><ol>
+<li><b>Separate claim from behavior.</b> The stated pyramid is populated only from Chipotle-authored mission/strategy language; no financial behavior is allowed into this side.</li>
+<li><b>Start revealed priorities with executive pay.</b> Extract the exact AIP and LTI metrics, their weights, modifiers, and time horizons from the latest DEF 14A.</li>
+<li><b>Cross-check with capital allocation.</b> Compare cash used for new units, existing restaurants/technology, investments, and share repurchases. Do not infer priorities from rhetoric alone.</li>
+<li><b>Build resources/capabilities from owned assets, systems, investment relationships, and current hiring.</b> A resource is something Chipotle has; a capability is a repeatable way it does something. Open roles are treated as evidence of a capability being strengthened or missing, not proof that the capability is already world-class.</li>
+<li><b>Build activities from segment reporting and operating data.</b> Revenue mix and unit activity receive more weight than marketing emphasis.</li>
+<li><b>Map each stated theme to behavioral evidence.</b> Use the 0/1/2 distance rubric, then explain every non-zero score in prose. The score is a forcing device, not a scientific measurement.</li>
+<li><b>State limitations.</b> Public filings lag current decisions; job postings can be replacements rather than capability gaps; capital allocation can be distorted by one-time market conditions; segment reporting can hide meaningful sub-segment differences.</li>
+</ol></div></section>
+<div class="footer">Prepared as a strategy-analysis tool for academic use. All interpretations are analytical inferences from cited public evidence; they are not statements by Chipotle.</div>
+
+</div>
+</div>
+
+<div id="builderWorkspace" class="workspace">
+<div class="wrap">
+<section class="builder-hero">
+<h1>Competitive Advantage Pyramid Builder</h1>
+<p><b>Stated vs. Revealed</b> — upload the documents that describe what a company says and what it actually rewards, funds, hires for, and earns revenue from. The browser analyzes the evidence and produces two pyramids, a distance model, and gap analysis.</p>
+<div class="meta">Transparent local pipeline: documents are analyzed in your browser; this version does not send uploads to an external AI service.</div>
+</section>
+
+<div class="card builder-inputs">
+<div class="builder-grid">
+<div>
+<h2>1. Company & evidence</h2>
+<div class="field"><label for="companyName">Company name</label><input id="companyName" placeholder="e.g., Costco Wholesale Corporation" /></div>
+<div class="dropzone">
+<b>Upload source documents</b><br><span class="note">PDF, DOCX, TXT, MD, HTML, CSV, or JSON. PDFs retain page numbers automatically.</span><br>
+<input id="fileInput" type="file" multiple accept=".pdf,.docx,.txt,.md,.html,.htm,.csv,.json" />
+</div>
+<div id="uploadStatus" class="status" style="display:none"></div>
+<div id="docList"></div>
+</div>
+<div>
+<h2>2. Add pasted/web evidence</h2>
+<div class="field"><label for="pasteTitle">Document title</label><input id="pasteTitle" placeholder="2026 DEF 14A Proxy Statement" /></div>
+<div class="inline-fields">
+<div class="field"><label for="pasteType">Evidence type</label><select id="pasteType"></select></div>
+<div class="field"><label for="pasteCitation">Section/page note</label><input id="pasteCitation" placeholder="CD&A, pp. 43–48" /></div>
+</div>
+<div class="field"><label for="pasteText">Paste document text or relevant excerpt</label><textarea id="pasteText" placeholder="Paste the source text here..."></textarea></div>
+<button class="action secondary" id="addPaste">Add pasted source</button>
+<div class="code-note" style="margin-top:14px"><b>Recommended evidence set</b><br>At minimum: mission/About or 10-K Item 1; latest DEF 14A proxy; capital allocation/cash flow evidence; current jobs; and segment/revenue reporting. The tool can run with less, but missing evidence is reported as a limitation.</div>
+</div>
+</div>
+<div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap" class="builder-controls">
+<button class="action" id="analyzeBtn">Analyze company</button>
+<button class="action ghost" id="clearBtn">Clear new-company workspace</button>
+</div>
+</div>
+
+<div id="analysisOutput" class="generated" style="display:none">
+<div class="analysis-head card"><div><h2 id="generatedTitle">Generated analysis</h2><div class="note" id="generatedMeta"></div></div><button class="action ghost builder-controls" onclick="window.print()">Print / Save PDF</button></div>
+<div class="builder-tabs">
+<button class="active" data-bpanel="genCompare">Side-by-side</button><button data-bpanel="genGaps">Gap analysis</button><button data-bpanel="genDistance">Distance model</button><button data-bpanel="genTrack">Public-company analysis</button><button data-bpanel="genEvidence">Evidence ledger</button><button data-bpanel="genMethod">Method</button>
+</div>
+<section id="genCompare" class="builder-panel active"></section>
+<section id="genGaps" class="builder-panel"></section>
+<section id="genDistance" class="builder-panel"></section>
+<section id="genTrack" class="builder-panel"></section>
+<section id="genEvidence" class="builder-panel"></section>
+<section id="genMethod" class="builder-panel"></section>
+</div>
+</div>
+</div>
+
+<script>
+const buttons=[...document.querySelectorAll('.nav button')];buttons.forEach(b=>b.onclick=()=>{buttons.forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.getElementById(b.dataset.panel).classList.add('active')});
+function calc(){const vals=[...document.querySelectorAll('.gapscore')].map(s=>+s.value);const score=vals.reduce((a,b)=>a+b,0),max=vals.length*2,pct=Math.round(score/max*100);document.getElementById('score').textContent=score;document.getElementById('pct').textContent=pct+'%';document.getElementById('label').textContent=pct<25?'Low':pct<55?'Moderate':'High'}
+
+document.querySelectorAll('.gapscore').forEach(s=>s.onchange=calc);calc();
+
+// ---------------- Multi-company document analyzer ----------------
+const evidenceTypes = [
+  ['stated','Stated — mission / About / CEO letter / 10-K Item 1'],
+  ['proxy','Revealed — DEF 14A / executive compensation'],
+  ['capital','Revealed — capital allocation / cash flow / buybacks / capex'],
+  ['jobs','Revealed — job postings / hiring'],
+  ['segments','Revealed — segment reporting / revenue / operating results'],
+  ['acquisition','Revealed — acquisitions / patents / investments'],
+  ['other','Other evidence']
+];
+const docs=[];
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clean=s=>String(s??'').replace(/\s+/g,' ').trim();
+const clip=(s,n=210)=>{s=clean(s);return s.length>n?s.slice(0,n-1).replace(/\s+\S*$/,'')+'…':s};
+const normalize=s=>clean(s).toLowerCase();
+const countWords=s=>clean(s).split(/\s+/).filter(Boolean).length;
+const typeLabel=t=>(evidenceTypes.find(x=>x[0]===t)||['',t])[1];
+
+const typeOptions=sel=>evidenceTypes.map(([v,l])=>`<option value="${v}" ${sel===v?'selected':''}>${l}</option>`).join('');
+document.getElementById('pasteType').innerHTML=typeOptions('stated');
+
+const modeChipotle=document.getElementById('modeChipotle'), modeBuilder=document.getElementById('modeBuilder');
+function switchWorkspace(which){
+  const isBuilder=which==='builder';
+  document.getElementById('chipotleWorkspace').classList.toggle('active',!isBuilder);
+  document.getElementById('builderWorkspace').classList.toggle('active',isBuilder);
+  modeChipotle.classList.toggle('active',!isBuilder); modeBuilder.classList.toggle('active',isBuilder);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+modeChipotle.onclick=()=>switchWorkspace('chipotle'); modeBuilder.onclick=()=>switchWorkspace('builder');
+
+function inferType(title,text){
+ const t=normalize(title+' '+String(text).slice(0,7000));
+ if(/def\s*14a|proxy statement|compensation discussion|annual incentive|performance share|executive compensation/.test(t))return 'proxy';
+ if(/job description|responsibilities|qualifications|careers|job posting|what you['’]ll do|position summary/.test(t))return 'jobs';
+ if(/segment reporting|reportable segment|segment revenue|net revenue|restaurant sales|revenue by segment/.test(t))return 'segments';
+ if(/capital expenditures|share repurchase|stock repurchase|cash flows|liquidity and capital resources|dividend|research and development/.test(t))return 'capital';
+ if(/acquisition|acquired|patent|intellectual property|venture investment|strategic investment/.test(t))return 'acquisition';
+ if(/mission|our purpose|our values|about us|business strategy|item 1|human capital|we believe|our strategy/.test(t))return 'stated';
+ return 'other';
+}
+
+async function parseFile(file){
+ const ext=file.name.split('.').pop().toLowerCase();
+ if(ext==='pdf'){
+   const pdfjs=await import('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs');
+   pdfjs.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs';
+   const ab=await file.arrayBuffer(); const pdf=await pdfjs.getDocument({data:ab}).promise; const pages=[];
+   for(let i=1;i<=pdf.numPages;i++){const page=await pdf.getPage(i);const tc=await page.getTextContent();const txt=tc.items.map(x=>x.str).join(' ');pages.push({page:i,text:clean(txt)});}
+   return {text:pages.map(p=>p.text).join('\n'),pages};
+ }
+ if(ext==='docx'){
+   if(!window.mammoth) throw new Error('DOCX parser did not load. Refresh the page and try again.');
+   const ab=await file.arrayBuffer(); const r=await window.mammoth.extractRawText({arrayBuffer:ab}); return {text:clean(r.value),pages:null};
+ }
+ let txt=await file.text();
+ if(ext==='html'||ext==='htm'){const dom=new DOMParser().parseFromString(txt,'text/html');txt=dom.body?.innerText||txt;}
+ return {text:clean(txt),pages:null};
+}
+
+function renderDocs(){
+ const host=document.getElementById('docList');
+ host.innerHTML=docs.length?'<h3 style="margin-top:18px">Sources loaded</h3>':'';
+ docs.forEach((d,i)=>{
+   const div=document.createElement('div');div.className='doc-row';
+   div.innerHTML=`<div class="doc-row-head"><div><h4>${esc(d.title)}</h4><div class="doc-meta">${d.pages?d.pages.length+' PDF pages':countWords(d.text).toLocaleString()+' words'} · ${esc(d.origin||'source')}</div></div><button class="remove-doc" data-rm="${i}">Remove</button></div><div class="doc-controls"><select data-type="${i}">${typeOptions(d.type)}</select><input data-cite="${i}" value="${esc(d.citation||'')}" placeholder="Section/page note (optional for PDFs)" /></div>`;
+   host.appendChild(div);
+ });
+ host.querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{docs.splice(+b.dataset.rm,1);renderDocs()});
+ host.querySelectorAll('[data-type]').forEach(x=>x.onchange=()=>docs[+x.dataset.type].type=x.value);
+ host.querySelectorAll('[data-cite]').forEach(x=>x.oninput=()=>docs[+x.dataset.cite].citation=x.value);
+}
+
+document.getElementById('fileInput').addEventListener('change',async e=>{
+ const files=[...e.target.files]; if(!files.length)return;
+ const status=document.getElementById('uploadStatus');status.style.display='block';status.className='status';status.textContent=`Reading ${files.length} file${files.length>1?'s':''}…`;
+ for(const f of files){
+   try{const parsed=await parseFile(f);docs.push({title:f.name,type:inferType(f.name,parsed.text),citation:'',text:parsed.text,pages:parsed.pages,origin:'uploaded file'});renderDocs();status.className='status ok';status.textContent=`Loaded ${docs.length} source${docs.length!==1?'s':''}. Review each evidence type before analyzing.`;}
+   catch(err){status.className='status error';status.textContent=`Could not read ${f.name}: ${err.message}`;}
+ }
+ e.target.value='';
+});
+
+document.getElementById('addPaste').onclick=()=>{
+ const title=clean(document.getElementById('pasteTitle').value)||'Pasted source'; const text=clean(document.getElementById('pasteText').value);
+ if(!text){alert('Paste some source text first.');return;}
+ docs.push({title,type:document.getElementById('pasteType').value,citation:clean(document.getElementById('pasteCitation').value),text,pages:null,origin:'pasted text'});renderDocs();
+ document.getElementById('pasteTitle').value='';document.getElementById('pasteCitation').value='';document.getElementById('pasteText').value='';
+};
+document.getElementById('clearBtn').onclick=()=>{docs.splice(0);renderDocs();document.getElementById('analysisOutput').style.display='none';document.getElementById('companyName').value='';};
+
+function sentenceChunks(doc){
+ const srcPages=doc.pages||[{page:null,text:doc.text}]; const out=[];
+ for(const p of srcPages){
+   const raw=String(p.text||'').replace(/\s+/g,' ').trim();
+   let ss=raw.split(/(?<=[.!?])\s+(?=[A-Z0-9])/g).map(clean).filter(x=>x.length>35);
+   if(ss.length<2) ss=raw.split(/\n+/).map(clean).filter(x=>x.length>35);
+   for(const text of ss)out.push({text,doc,page:p.page,type:doc.type});
+ }
+ return out;
+}
+function citation(c){
+ const bits=[c.doc.title];
+ if(c.doc.citation)bits.push(c.doc.citation);
+ if(c.page)bits.push('p. '+c.page);
+ return bits.join(', ');
+}
+function scoreKeywords(text,arr){const t=normalize(text);let n=0;for(const k of arr){if(t.includes(k))n+=k.includes(' ')?2:1;}return n;}
+
+const themes={
+ growth:{label:'Growth and expansion',keys:['growth','grow','expansion','expand','new stores','new restaurants','new locations','unit openings','site pipeline']},
+ profitability:{label:'Profitability and cash generation',keys:['profit','margin','cash flow','cash-flow','operating income','ebitda','earnings','eps','return on invested capital','roic']},
+ customer:{label:'Customer / guest experience',keys:['customer','guest','member experience','consumer','service','accessibility','convenience','loyalty']},
+ people:{label:'People and talent development',keys:['people','employee','employees','talent','workforce','leadership development','training','culture','retention']},
+ sustainability:{label:'Sustainability / responsible sourcing',keys:['sustainability','sustainable','responsible sourcing','responsibly sourced','environment','climate','community','communities','esg','integrity']},
+ safety:{label:'Safety and quality',keys:['food safety','safety','quality assurance','quality','compliance','risk control']},
+ innovation:{label:'Technology and innovation',keys:['technology','digital','innovation','automation','artificial intelligence',' ai ','data','analytics','app','ecommerce','e-commerce','personalization']},
+ global:{label:'Global / geographic expansion',keys:['global','international','outside the united states','outside the u.s.','new markets','geographic expansion']},
+ shareholder:{label:'Shareholder returns',keys:['shareholder','total shareholder return','tsr','share repurchase','stock repurchase','buyback','dividend']},
+ efficiency:{label:'Efficiency and productivity',keys:['efficiency','productivity','throughput','cost reduction','cost savings','optimize','optimization']},
+ supply:{label:'Supply chain and sourcing',keys:['supply chain','supplier','suppliers','procurement','sourcing','distribution']},
+ brand:{label:'Brand and reputation',keys:['brand','reputation','trust','awareness']}
+};
+function detectThemes(text){return Object.entries(themes).map(([k,v])=>[k,scoreKeywords(text,v.keys)]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]);}
+function bestTheme(text){return detectThemes(text)[0]?.[0]||null;}
+
+const resourceGroups=[
+ ['People / talent base',['employees','workforce','people','talent','team members']],['Brand / reputation',['brand','reputation','customer trust']],['Supplier / sourcing network',['suppliers','supplier network','supply chain','sourcing network']],['Digital platform, data, or loyalty ecosystem',['digital platform','mobile app','loyalty','rewards','customer data','data platform','ecommerce','e-commerce']],['Physical operating network',['restaurants','stores','locations','facilities','distribution centers']],['Financial resources',['cash and cash equivalents','liquidity','cash balance','credit facility']],['Intellectual property / proprietary assets',['patents','trademarks','intellectual property','proprietary technology']]
+];
+const capabilityGroups=[
+ ['Operational excellence / execution',['operational excellence','operations excellence','operating model','throughput','execution','restaurant operations','store operations']],['Quality and safety system',['quality assurance','food safety','safety system','quality control']],['Talent development and training',['leadership development','talent development','training program','promote from within','internal promotion']],['Analytics and personalization',['analytics','data science','personalization','insights','forecasting']],['Technology / automation deployment',['automation','technology deployment','digital transformation','systems implementation']],['Site selection and development',['site selection','real estate strategy','development pipeline','new unit development','location strategy']],['Supply-chain management',['procurement','supply chain management','supplier management','sourcing capability']],['Innovation / product development',['research and development','r&d','product development','menu innovation','innovation pipeline']],['Customer experience management',['customer experience','guest experience','member experience','service model']]
+];
+const activityGroups=[
+ ['Operate core stores / restaurants / locations',['operate restaurants','operates restaurants','operate stores','operates stores','company-owned','company operated','retail locations']],['Sell and serve core products or services',['sell','serve','provides','provide services','products and services']],['Digital ordering / ecommerce / loyalty',['digital sales','digital ordering','ecommerce','e-commerce','mobile ordering','delivery','loyalty','rewards']],['Open new locations and enter markets',['open new','new restaurants','new stores','new locations','expansion','new markets']],['Develop or launch products / menu offerings',['menu innovation','new products','product launches','product innovation']],['Manufacture / distribute / fulfill',['manufacture','manufacturing','distribution','fulfillment','deliver']],['Franchise / license operations',['franchise','licensed locations','licensees']]
+];
+const metricGroups=[
+ ['Sales / comparable-sales growth',['comparable sales','same-store sales','revenue growth','net sales','sales growth']],['Profitability / cash-flow performance',['cash flow margin','cash-flow margin','restaurant cash flow','operating margin','ebitda','operating income','profit margin']],['Earnings per share',['earnings per share',' eps ']],['Return on capital',['return on invested capital','roic','return on equity','roe']],['Shareholder return',['total shareholder return','tsr','shareholder return']],['New-unit / site pipeline',['new restaurant openings','new store openings','site assessment','site pipeline','unit openings','new locations']],['Safety / quality guardrail',['food safety','safety modifier','quality modifier']],['People / human-capital metric',['employee engagement','retention','turnover','diversity','human capital','people metric']],['Sustainability / ESG metric',['sustainability','esg metric','carbon','emissions','responsible sourcing']]
+];
+const capitalGroups=[
+ ['Capital spending / growth investment',['capital expenditures','capital expenditure','capex','construction of new','new restaurants','new stores']],['Share repurchases',['share repurchases','stock repurchases','repurchase program','buyback']],['Dividends',['dividends paid','cash dividends','dividend']],['R&D / innovation spending',['research and development','r&d expense','research & development']],['Acquisitions / strategic investments',['acquisition','acquisitions','strategic investment','equity investment']]
+];
+
+function chooseByGroups(chunks,groups,limit=6,kind='RESOURCE'){
+ const found=[];
+ for(const [label,keys] of groups){
+   const scored=chunks.map(c=>({c,s:scoreKeywords(c.text,keys)})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s || b.c.text.length-a.c.text.length);
+   if(scored.length)found.push({label,kind,chunk:scored[0].c,score:scored[0].s,theme:bestTheme(scored[0].c.text)});
+ }
+ return found.sort((a,b)=>b.score-a.score).slice(0,limit);
+}
+function chooseThemes(chunks,limit=4,kind='PRIORITY'){
+ const by={};
+ for(const c of chunks){for(const [k,s] of detectThemes(c.text)){const bonus=/mission|purpose|priority|strategy|value|believe|committed|focus|goal|objective/.test(normalize(c.text))?2:0;const sc=s+bonus;if(!by[k]||sc>by[k].score)by[k]={label:themes[k].label,kind,chunk:c,score:sc,theme:k};}}
+ return Object.values(by).sort((a,b)=>b.score-a.score).slice(0,limit);
+}
+function chooseProxy(chunks,limit=5){
+ const out=[];
+ const payContext=/incentive|bonus|compensation|performance|award|payout|metric|measure|weighted|weighting|modifier|target|scorecard|psu|rsu|long-term|annual plan/;
+ const negated=/not (?:a )?(?:weighted|performance|incentive|metric|measure)|not included|no weight|zero weight|does not count|excluded from/;
+ for(const [label,keys] of metricGroups){
+   const candidates=[];
+   for(const c of chunks){const t=normalize(c.text);const raw=scoreKeywords(c.text,keys);if(!raw)continue;if(!payContext.test(t)&&!/\b\d{1,3}%\b/.test(t))continue;if(negated.test(t)&&!label.includes('guardrail'))continue;let sc=raw+(payContext.test(t)?2:0)+(/\b\d{1,3}%\b/.test(t)?2:0)+(label.includes('guardrail')&&/reduce|downside|modifier|penalty|cannot increase/.test(t)?2:0);candidates.push({c,s:sc});}
+   candidates.sort((a,b)=>b.s-a.s);
+   if(candidates.length)out.push({label,kind:'PRIORITY',chunk:candidates[0].c,score:candidates[0].s,theme:bestTheme(candidates[0].c.text)});
+ }
+ return out.sort((a,b)=>b.score-a.score).slice(0,limit);
+}
+function chooseCapital(chunks,limit=4){return chooseByGroups(chunks,capitalGroups,limit,'PRIORITY');}
+function chooseJobs(jobDocs,limit=5){
+ const out=[];
+ for(const d of jobDocs){
+   const ch=sentenceChunks(d); let best=null;
+   const allGroups=[...capabilityGroups];
+   for(const [label,keys] of allGroups){for(const c of ch){const s=scoreKeywords(c.text,keys);if(s>0&&(!best||s>best.score))best={label:'Capability being strengthened: '+label.replace(/\s*\/.*$/,''),kind:'CAPABILITY',chunk:c,score:s+2,theme:bestTheme(c.text)};}}
+   if(!best&&ch[0])best={label:'Capability being strengthened: '+d.title.replace(/\.[^.]+$/,''),kind:'CAPABILITY',chunk:ch[0],score:1,theme:bestTheme(ch[0].text)};
+   if(best)out.push(best);
+ }
+ return out.sort((a,b)=>b.score-a.score).slice(0,limit);
+}
+function dedupe(items,limit=7){const seen=new Set(),out=[];for(const x of items.sort((a,b)=>b.score-a.score)){const k=(x.label+'|'+(x.theme||'')).toLowerCase();if(!seen.has(k)){seen.add(k);out.push(x);}if(out.length>=limit)break;}return out;}
+function itemHtml(x){return `<div class="item"><span class="tag ${x.kind==='RESOURCE'?'resource':x.kind==='CAPABILITY'?'capability':x.kind==='ACTIVITY'?'activity':'priority'}">${esc(x.kind)}</span><b>${esc(x.label)}</b><div class="cite">${esc(citation(x.chunk))}</div><div class="evidence-excerpt">Evidence: “${esc(clip(x.chunk.text,230))}”</div></div>`;}
+function pyramidHtml(title,note,base,mid,top){
+ const topSum=top.slice(0,4).map(x=>x.label).join('; ')||'Insufficient activity evidence';
+ const midSum=mid.slice(0,4).map(x=>x.label.replace(/^Capability being strengthened: /,'')).join('; ')||'Insufficient resource/capability evidence';
+ const baseSum=base.slice(0,4).map(x=>x.label).join('; ')||'Insufficient priority evidence';
+ return `<div class="card"><h2>${esc(title)}</h2><p class="note">${esc(note)}</p><div class="pyramid"><div class="layer top">ACTIVITIES<small>${esc(topSum)}</small></div><div class="layer mid">RESOURCES & CAPABILITIES<small>${esc(midSum)}</small></div><div class="layer base">VALUES & PRIORITIES<small>${esc(baseSum)}</small></div></div><h3>Base — values & priorities</h3>${base.map(itemHtml).join('')||'<p class="warning">No strong evidence found for this layer.</p>'}<h3>Middle — resources & capabilities</h3>${mid.map(itemHtml).join('')||'<p class="warning">No strong evidence found for this layer.</p>'}<h3>Top — activities</h3>${top.map(itemHtml).join('')||'<p class="warning">No strong evidence found for this layer.</p>'}</div>`;
+}
+function themeSet(items){const m={};for(const x of items){if(x.theme)m[x.theme]=(m[x.theme]||0)+(x.weight||1);}return m;}
+function sourceForTheme(items,k){return items.find(x=>x.theme===k)||null;}
+function gapMeaning(theme,score){
+ const specific={
+ people:'If people development competes with financial targets, the behavioral evidence gives clearer formal weight to the measured priorities. That is a potential governance/measurement risk, not proof that the people claim is insincere.',
+ sustainability:'Purpose or sustainability may differentiate the brand, but weak direct reinforcement in incentives or capital allocation means those commitments could be more vulnerable when they conflict with measured financial goals.',
+ global:'This often indicates deliberate sequencing rather than contradiction: management may be describing a future growth vector that is not yet a current source of competitive advantage.',
+ innovation:'The company may be describing innovation as strategically important before the uploaded spending, hiring, or operating evidence shows it at comparable strength.',
+ customer:'A customer-centered claim is more credible when compensation, investment, operating metrics, or hiring show direct reinforcement. Limited evidence creates a measurement gap.',
+ safety:'If safety appears mainly as a downside modifier or compliance constraint, management is being told to avoid failure rather than being positively rewarded for exceeding the standard.'
+ };
+ return specific[theme]||`The stated theme has ${score===2?'little direct':'some but incomplete'} support in the uploaded behavioral evidence. That can reflect deliberate positioning, an early-stage investment, or a real measurement misalignment; the documents alone cannot prove motive.`;
+}
+function makeDistance(statedItems,revealedItems){
+ const st=themeSet(statedItems),rv=themeSet(revealedItems);let rows=[];
+ for(const k of Object.keys(st)){const s=rv[k]>=2?0:rv[k]===1?1:2;rows.push({theme:k,label:themes[k]?.label||k,score:s,stated:sourceForTheme(statedItems,k),revealed:sourceForTheme(revealedItems,k)});}
+ if(!rows.length) rows=[{theme:'unknown',label:'Insufficient stated themes',score:2,stated:statedItems[0],revealed:revealedItems[0]}];
+ return rows.sort((a,b)=>b.score-a.score).slice(0,8);
+}
+function evidenceTypeCounts(){const c={};for(const d of docs)c[d.type]=(c[d.type]||0)+1;return c;}
+function buildAnalysis(){
+ const company=clean(document.getElementById('companyName').value);
+ if(!company){alert('Enter a company name first.');return;}
+ if(!docs.length){alert('Add at least one source document first.');return;}
+ const all=docs.flatMap(sentenceChunks); const statedChunks=all.filter(c=>c.type==='stated'); const proxyChunks=all.filter(c=>c.type==='proxy'); const capitalChunks=all.filter(c=>c.type==='capital'); const segmentChunks=all.filter(c=>c.type==='segments'); const acquisitionChunks=all.filter(c=>c.type==='acquisition');
+ const nonStated=all.filter(c=>c.type!=='stated');
+ // Stated
+ const statedBase=chooseThemes(statedChunks,4,'PRIORITY');
+ const statedResources=chooseByGroups(statedChunks,resourceGroups,4,'RESOURCE');
+ const statedCaps=chooseByGroups(statedChunks,capabilityGroups,4,'CAPABILITY');
+ const statedMid=dedupe([...statedResources,...statedCaps],7);
+ const statedTop=chooseByGroups(statedChunks,activityGroups,5,'ACTIVITY');
+ // Revealed base: executive metrics first, then capital choices
+ const revealedBase=dedupe([...chooseProxy(proxyChunks,5),...chooseCapital(capitalChunks,4)],6);
+ // Revealed middle: jobs + actual resources/capabilities from revealed docs
+ const jobs=chooseJobs(docs.filter(d=>d.type==='jobs'),5);
+ const actualResources=chooseByGroups(nonStated,resourceGroups,4,'RESOURCE');
+ const acquiredCaps=chooseByGroups(acquisitionChunks,capabilityGroups,3,'CAPABILITY');
+ const revealedMid=dedupe([...jobs,...actualResources,...acquiredCaps],7);
+ // Revealed top: segment evidence weighted most heavily
+ let revealedTop=chooseByGroups(segmentChunks,activityGroups,5,'ACTIVITY');
+ if(revealedTop.length<3)revealedTop=dedupe([...revealedTop,...chooseByGroups(nonStated,activityGroups,5,'ACTIVITY')],5);
+ // Direct pay/capital and segment evidence count as stronger behavioral matches than one hiring/resource mention.
+ revealedBase.forEach(x=>x.weight=2); revealedTop.forEach(x=>x.weight=2); revealedMid.forEach(x=>x.weight=1);
+ const statedAll=[...statedBase,...statedMid,...statedTop], revealedAll=[...revealedBase,...revealedMid,...revealedTop];
+ const distance=makeDistance(statedAll,revealedAll); const total=distance.reduce((a,b)=>a+b.score,0), max=distance.length*2, pct=Math.round(total/max*100); const label=pct<25?'Low':pct<55?'Moderate':'High';
+ const gaps=distance.filter(x=>x.score>0).slice(0,Math.max(2,Math.min(3,distance.filter(x=>x.score>0).length)));
+ const counts=evidenceTypeCounts();
+ const missing=[];[['stated','mission/About/10-K Item 1'],['proxy','DEF 14A proxy'],['capital','capital allocation'],['jobs','current hiring'],['segments','segment/revenue reporting']].forEach(([k,l])=>{if(!counts[k])missing.push(l)});
+ renderGenerated({company,statedBase,statedMid,statedTop,revealedBase,revealedMid,revealedTop,distance,total,max,pct,label,gaps,missing});
+}
+
+document.getElementById('analyzeBtn').onclick=buildAnalysis;
+
+function renderGenerated(a){
+ document.getElementById('generatedTitle').textContent=a.company+': Competitive Advantage Pyramid';
+ document.getElementById('generatedMeta').textContent=`Generated from ${docs.length} uploaded/pasted source${docs.length===1?'':'s'} · ${new Date().toLocaleDateString()}`;
+ document.getElementById('genCompare').innerHTML=`${a.missing.length?`<div class="warning"><b>Evidence limitation:</b> Missing ${esc(a.missing.join(', '))}. The tool generated a best-effort output, but those missing source types can materially change the revealed pyramid.</div>`:''}<div class="grid2">${pyramidHtml('Stated Pyramid','Built only from source(s) classified as mission/About/CEO letter/10-K Item 1.',a.statedBase,a.statedMid,a.statedTop)}${pyramidHtml('Revealed Pyramid','Built from executive incentives, capital allocation, hiring, acquisitions/investments, and segment/operating evidence.',a.revealedBase,a.revealedMid,a.revealedTop)}</div>`;
+ const gapHtml=a.gaps.length?a.gaps.map((g,i)=>{const st=g.stated?`${citation(g.stated.chunk)} — “${clip(g.stated.chunk.text,160)}”`:'No direct stated citation found'; let rv;if(g.revealed){rv=`Related revealed evidence: ${citation(g.revealed.chunk)} — “${clip(g.revealed.chunk.text,160)}”`;}else if(a.revealedBase[0]){rv=`No close behavioral match found. Strongest revealed priority instead: ${citation(a.revealedBase[0].chunk)} — “${clip(a.revealedBase[0].chunk.text,160)}”`;}else{rv='No close behavioral match was found in the uploaded revealed sources.';}return `<div class="gap-card"><div class="classify">Gap ${i+1} · ${g.score===2?'substantive':'partial'}</div><h3>${esc(g.label)}</h3><p><b>Stated evidence:</b> ${esc(st)}</p><p><b>Behavioral comparison:</b> ${esc(rv)}</p><div class="meaning"><b>Strategic meaning:</b> ${esc(gapMeaning(g.theme,g.score))}</div></div>`}).join(''):'<p class="warning">No material gaps were detected by the theme-matching rules. That does not prove perfect alignment; add richer behavioral evidence and inspect the output manually.</p>';
+ document.getElementById('genGaps').innerHTML=`<div class="card"><h2>Gap analysis</h2><p class="note">The tool treats absence from the uploaded evidence as a limitation, not proof of hypocrisy. Each gap should be reviewed by the analyst before submission.</p>${gapHtml}</div>`;
+ document.getElementById('genDistance').innerHTML=`<div class="card matrix"><h2>Distance model</h2><p>0 = behavioral evidence strongly reinforces the stated theme; 1 = partial/indirect reinforcement; 2 = little direct reinforcement found in the uploaded evidence.</p><table><thead><tr><th>Theme</th><th>Observed behavioral match</th><th>Score</th></tr></thead><tbody>${a.distance.map(r=>`<tr><td>${esc(r.label)}</td><td>${r.score===0?'Strong direct reinforcement found':r.score===1?'Some related behavioral evidence found':'No close behavioral match found in the uploaded revealed sources'}</td><td><b>${r.score}</b></td></tr>`).join('')}</tbody></table><div class="scorebox"><div class="metric"><span>Total gap points</span><strong>${a.total}</strong><small>out of ${a.max}</small></div><div class="metric"><span>Normalized distance</span><strong>${a.pct}%</strong><small>higher = more stated/revealed distance</small></div><div class="metric"><span>Interpretation</span><strong>${a.label}</strong><small>heuristic only</small></div></div><p class="note">This is intentionally a transparent heuristic, not a statistical model. It forces the analyst to show exactly which stated themes are or are not reinforced by observable behavior.</p></div>`;
+ const aligned=a.distance.filter(x=>x.score===0).slice(0,3).map(x=>x.label); const mis=a.gaps.filter(x=>['people','sustainability','safety'].includes(x.theme)); const positioning=a.gaps.filter(x=>['global','growth','innovation'].includes(x.theme));
+ const strongestBase=a.revealedBase.slice(0,3).map(x=>x.label).join(', ')||'the behavioral priorities available in the uploaded evidence';
+ document.getElementById('genTrack').innerHTML=`<div class="card track-text"><h2>Large public company track analysis</h2><p><b>Overall read:</b> The generated distance is <b>${a.label.toLowerCase()}</b> (${a.pct}%). ${aligned.length?`The strongest documented alignment is around ${esc(aligned.join(', '))}.`:'The uploaded sources do not yet show a strongly matched theme.'}</p><p>The revealed base is driven most clearly by <b>${esc(strongestBase)}</b>. Because the proxy and capital-allocation sources represent formal incentives and committed resources, they receive more weight than general corporate language in interpreting what management is likely to protect when trade-offs become difficult.</p>${mis.length?`<p>The most plausible <b>real misalignment or governance risk</b> appears in ${esc(mis.map(x=>x.label).join(' and '))}. The tool found the stated theme but weaker direct reinforcement in the uploaded executive-pay/capital evidence. That does not establish insincerity; it means the formal measurement system gives management clearer signals elsewhere.</p>`:''}${positioning.length?`<p>By contrast, ${esc(positioning.map(x=>x.label).join(' and '))} may represent <b>deliberate positioning or sequencing</b>: a company can credibly announce a future strategic direction before it becomes a large share of current revenue, assets, or hiring. In that case the gap is strategically important because the theme should not yet be treated as a fully developed competitive advantage.</p>`:''}<p><b>Strategic implication:</b> Based on the uploaded evidence, the defensible competitive advantage is the set of activities and capabilities that are repeatedly reinforced by pay metrics, capital allocation, hiring, and revenue concentration — not simply the themes emphasized most often in corporate messaging. The analyst should review every generated inference, especially where a missing source type could explain an apparent gap.</p></div>`;
+ document.getElementById('genEvidence').innerHTML=`<div class="card"><h2>Evidence ledger</h2>${docs.map(d=>`<div class="source"><strong>${esc(d.title)}</strong><span class="source-chip">${esc(typeLabel(d.type))}</span>${d.pages?`<span class="source-chip">${d.pages.length} PDF pages</span>`:''}<br>${d.citation?`Analyst citation note: ${esc(d.citation)}<br>`:''}<span class="note">${countWords(d.text).toLocaleString()} words analyzed · ${esc(d.origin||'source')}</span></div>`).join('')}</div>`;
+ document.getElementById('genMethod').innerHTML=`<div class="card method"><h2>Method / documented pipeline</h2><ol><li><b>Separate claim from behavior.</b> Only evidence classified as mission/About/CEO letter/10-K Item 1 can populate the stated pyramid.</li><li><b>Start revealed priorities with the proxy.</b> The parser searches compensation evidence for weighted performance metrics, payout conditions, and target language, then cross-checks those priorities against capital spending, repurchases, dividends, R&D, and acquisitions.</li><li><b>Distinguish resources from capabilities.</b> Resources are assets or stocks the company has (people, brand, network, platforms, cash, IP). Capabilities are repeatable ways the company does things (operations, development, analytics, safety, sourcing, innovation). Hiring is treated as evidence of a capability being strengthened, not proof that it is already superior.</li><li><b>Use operating evidence for activities.</b> Segment/revenue documents receive first priority when the tool identifies what the company actually does and where revenue comes from.</li><li><b>Compute distance transparently.</b> Each stated theme is mapped to revealed evidence using a fixed 0/1/2 rule. The score is a forcing device, not a scientific measurement.</li><li><b>Preserve citations.</b> PDF evidence retains the page number from which each sentence was extracted. For pasted/DOCX/web text, the user-supplied section/page note is carried into the citation.</li><li><b>Human review is required.</b> Keyword rules can miss context, job postings may represent replacement hiring rather than capability gaps, filings lag current decisions, and absence from uploaded evidence is not proof that an activity or value is absent from the company.</li></ol><div class="warning"><b>What this tool should not decide:</b> whether management is sincere, whether a company is ethically “good,” or whether a gap is definitively intentional. Those require context and judgment beyond document classification.</div></div>`;
+ document.getElementById('analysisOutput').style.display='block'; document.getElementById('analysisOutput').scrollIntoView({behavior:'smooth',block:'start'});
+ const tabs=[...document.querySelectorAll('.builder-tabs button')];tabs.forEach(b=>b.onclick=()=>{tabs.forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.builder-panel').forEach(p=>p.classList.remove('active'));document.getElementById(b.dataset.bpanel).classList.add('active')});
+}
+
+</script>
+</body></html>
